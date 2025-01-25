@@ -17,7 +17,21 @@ pipeline {
             }
             steps {
                 script {
-                    sh '/usr/bin/env bash /workspace/entrypoint.sh'
+                    withCredentials(bindings: [ \
+                        sshUserPrivateKey( \
+                            credentialsId: "${params.SSH_KEY_CREDENTIALS_ID}", \
+                            keyFileVariable: 'JENKINS_CREDENTIAL_APPLICATION_DEPLOYMENT_PREVIOUSLY_AUTHORIZED_SSH_KEY_PRIVATE', \
+                            // usernameVariable: 'JENKINS_CREDENTIAL_APPLICATION_DEPLOYMENT_PREVIOUSLY_AUTHORIZED_SSH_USERNAME' \
+                        )
+                    ]) {
+                        sh '''
+                        echo "Setting up SSH credentials inside Docker container..."
+                        mkdir -p $HOME/.ssh
+                        cp ${JENKINS_CREDENTIAL_APPLICATION_DEPLOYMENT_PREVIOUSLY_AUTHORIZED_SSH_KEY_PRIVATE} $HOME/.ssh/id_rsa
+                        chmod 600 $HOME/.ssh/id_rsa
+                        /usr/bin/env bash /workspace/entrypoint.sh
+                        '''
+                    }
                 }
                 // archiveArtifacts artifacts: '/tmp/docker_volume_backup.tar.gz', allowEmptyArchive: true
             }
