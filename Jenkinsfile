@@ -10,7 +10,7 @@ pipeline {
                     registryUrl "${params.REGISTRY_URL}"
                     registryCredentialsId "${params.REGISTRY_CREDENTIALS_ID}"
                     image "${params.IMAGE}"
-                    args "--entrypoint ''"
+                    args "-u root --entrypoint ''"
                     // args "-e MAILGUN_API_KEY=${env.MAILGUN_API_KEY} -e EMAIL_THRESHOLD=${env.EMAIL_THRESHOLD} -v ${WORKSPACE}/data:/data"
                     reuseNode true
                 }
@@ -19,7 +19,7 @@ pipeline {
                 script {
                     sh '/usr/bin/env bash /workspace/entrypoint.sh'
                 }
-                archiveArtifacts artifacts: '/tmp/docker_volume_backup.tar.gz', allowEmptyArchive: true
+                // archiveArtifacts artifacts: '/tmp/docker_volume_backup.tar.gz', allowEmptyArchive: true
             }
             // post {
             //     success {
