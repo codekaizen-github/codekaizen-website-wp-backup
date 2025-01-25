@@ -9,7 +9,7 @@ pipeline {
                     alwaysPull true
                     registryUrl "${params.REGISTRY_URL}"
                     registryCredentialsId "${params.REGISTRY_CREDENTIALS_ID}"
-                    image "${params.IMAGE_NAME}:${params.IMAGE_TAG}"
+                    image "${params.IMAGE}"
                     // args "-e MAILGUN_API_KEY=${env.MAILGUN_API_KEY} -e EMAIL_THRESHOLD=${env.EMAIL_THRESHOLD} -v ${WORKSPACE}/data:/data"
                     reuseNode true
                 }
