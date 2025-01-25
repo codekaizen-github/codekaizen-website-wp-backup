@@ -10,7 +10,7 @@ pipeline {
                     registryUrl "${params.REGISTRY_URL}"
                     registryCredentialsId "${params.REGISTRY_CREDENTIALS_ID}"
                     image "${params.IMAGE}"
-                    args "-u root --entrypoint ''"
+                    args "-u root --entrypoint '' -v ${WORKSPACE}:/tmp"
                     // args "-e MAILGUN_API_KEY=${env.MAILGUN_API_KEY} -e EMAIL_THRESHOLD=${env.EMAIL_THRESHOLD} -v ${WORKSPACE}/data:/data"
                     reuseNode true
                 }
@@ -33,7 +33,7 @@ pipeline {
                         '''
                     }
                 }
-                // archiveArtifacts artifacts: '/tmp/docker_volume_backup.tar.gz', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'docker_volume_backup.tar.gz', allowEmptyArchive: true
             }
             // post {
             //     success {
